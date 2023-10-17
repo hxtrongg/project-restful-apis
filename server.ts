@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
-import app from './src/app'
+import app from './src/app';
 import mongoose from 'mongoose';
 
 dotenv.config();
 //Khai báo port cho server
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 9494;
 
 /// Start the server
 const mongooseDbOptions = {
@@ -16,20 +16,21 @@ const mongooseDbOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
+
+  /**
+   * @param1 connections string
+   * @param1 optional configs
+   */
   mongoose
     .connect('mongodb://localhost:27017/NodejsTest', mongooseDbOptions)
     .then(() => {
-      console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+       console.log('⚡️[MongoDB]: Connected successfully');
       //should listen app here
-      
+      //Khởi tạo server ở PORT đã chỉ định ở trên
+        app.listen(PORT, () => {
+            console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+        });
     })
     .catch((err) => {
       console.error('Failed to Connect to MongoDB', err);
     });
-
-
-//Khởi tạo server ở PORT đã chỉ định ở trên
-app.listen(PORT, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
-});
-

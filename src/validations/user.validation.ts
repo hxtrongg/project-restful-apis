@@ -1,24 +1,28 @@
 import Joi from 'joi';
-/* 
-* Tất cả các hàm ở đây chúng ta nên đặt tên giống với controller và services
-*/
+import {objectId, passwordStrong} from './custom.validation'
+/***
+ * Tất cả các hàm ở đây bạn nên đặt tên giống với controller và service
+ */
 const getUserById = {
   params: Joi.object().keys({
-    id: Joi.number().required(),
+    id: Joi.custom(objectId).required(), //Muốn id là số, và bắt buộc điền
   }),
 };
 
 const updateItem = {
-    params: Joi.object().keys({
-        id: Joi.number().required(), // muốn id là số, và bắt buộc điền.
-      }),
-    body: Joi.object().keys({
-      name: Joi.string().optional(),
-      email: Joi.string().optional(),
-      password: Joi.string().optional()
-    }),
-  };
+  params: Joi.object().keys({
+    id: Joi.custom(objectId).required(), //Muốn id là số, và bắt buộc điền
+  }),
+  body: Joi.object().keys({
+    firstName: Joi.string().min(6).max(12).required(),
+    lastName: Joi.string().min(6).max(12).required(),
+    phoneNumber: Joi.string().empty('').optional(),
+    email: Joi.string().email().required(),//optional = có thể ko truyền, và phải là email
+    password: Joi.custom(passwordStrong).required()
+  }),
+}
 
 export default {
-  getUserById
+  getUserById,
+  updateItem
 };

@@ -6,7 +6,7 @@ import userValidation from '../../validations/user.validation';
 /***
  * Route chỉ làm nhiệm vụ định tuyến
  * Mapping request giữa client với Server
- * ==> Không nên chứa các Logic 
+ * ==> Không nên chứa các Logic
  */
 const router = express.Router();
 
@@ -14,7 +14,7 @@ const router = express.Router();
 router.get('/users', usersController.getAllUsers);
 
 //get user by ID
-router.get('/users/:id',validateSchema(userValidation.getUserById), usersController.getUserById);
+router.get('/users/:id', validateSchema(userValidation.getUserById), usersController.getUserById);
 
 //Create a new user
 router.post('/users', usersController.createItem);

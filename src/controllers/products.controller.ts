@@ -1,16 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import { sendJsonSuccess } from '../helpers/responseHandler';
-import categoriesService from '../services/categories.service';
+import productsService from '../services/products.service';
+
 /**
- * Controller == Điều khiển
+ * Controller - Điều khiển
  * - Tiếp nhận req từ client
  * - Phản hồi lại res cho client
  */
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const categories = await categoriesService.getAllItem();
-    sendJsonSuccess(res)(categories); // Gọi hàm mà có truyền giá trị cho data
+    const products = await productsService.getAllItems();
+    sendJsonSuccess(res)(products); // Gọi hàm mà có truyền giá trị cho data
   } catch (error) {
     next(error);
   }
@@ -18,9 +19,17 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 
 const getItemById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await categoriesService.getById((req.params.id));
+    const product = await productsService.getItemById(req.params.id);
+    sendJsonSuccess(res)(product);
+  } catch (error) {
+    next(error);
+  }
+};
 
-    sendJsonSuccess(res)(user);
+const getItemBySlug = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = await productsService.getItemBySlug(req.params.slug);
+    sendJsonSuccess(res)(product);
   } catch (error) {
     next(error);
   }
@@ -28,10 +37,9 @@ const getItemById = async (req: Request, res: Response, next: NextFunction) => {
 
 const createItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    //thêm phần tử mới vào categories[]
     const payload = req.body;
-    const oldItem = await categoriesService.createItem(payload);
-    sendJsonSuccess(res)(oldItem);
+    const newProduct = await productsService.createItem(payload);
+    sendJsonSuccess(res)(newProduct);
   } catch (error) {
     next(error);
   }
@@ -42,11 +50,8 @@ const updateItem = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     console.log(id, req.body);
     const payload = req.body;
-    //Bước 1: Tìm xem  có tồn tại user có id không
-    const newcategories = await categoriesService.updateItem((id), payload);
-
-    sendJsonSuccess(res)(newcategories); // Gọi hàm mà có truyền giá trị cho data
-    //res.json('ok');
+    const updatedProduct = await productsService.updateItem(id, payload);
+    sendJsonSuccess(res)(updatedProduct);
   } catch (error) {
     next(error);
   }
@@ -54,13 +59,11 @@ const updateItem = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params; //id = 4
-
-    const newcategories = await categoriesService.deleteItem(id);
-
-    sendJsonSuccess(res)(newcategories); // Gọi hàm mà có truyền giá trị cho data
+    const { id } = req.params;
+    const deletedProduct = await productsService.deleteItem(id);
+    sendJsonSuccess(res)(deletedProduct);
   } catch (err) {
-    next(err); //Chuyển tiếp lỗi ra cho handle error ở app.ts xử lý
+    next(err);
   }
 };
 
@@ -70,4 +73,5 @@ export default {
   updateItem,
   createItem,
   deleteItem,
+  getItemBySlug
 };
