@@ -1,19 +1,24 @@
-import Employee from '../models/employees.model'; // Đổi từ 'suppliers.model' thành 'employees.model'
-import { IEmployee } from '../types/model'; // Đổi từ 'ISupplier' thành 'IEmployee'
+import Employee from '../models/employees.model';
+import { IEmployee } from '../types/model'; 
 
 const getAllItems = async () => {
-  const employees = Employee.find(); // Đổi từ 'Supplier' thành 'Employee'
-  return employees;
+  const employees = Employee.find({}, ' -__v '); 
+  /// get total documents in the Categories collection 
+  const totalRecords = await Employee.count();
+  return {
+    employees,
+    totalRecords
+  } 
 };
 
 const getItemById = async (id: string) => {
-  console.log(id);
-  const employee = await Employee.findById(id); // Đổi từ 'Supplier' thành 'Employee'
+  // console.log(id);
+  const employee = await Employee.findById(id); 
   return employee;
 };
 
 const createItem = async (payload: IEmployee) => {
-  const employee = await Employee.create(payload); // Đổi từ 'Supplier' thành 'Employee'
+  const employee = await Employee.create(payload); 
   return employee;
 };
 
@@ -25,7 +30,7 @@ const updateItem = async (id: string, payload: IEmployee) => {
 };
 
 const deleteItem = async (id: string) => {
-  const employee = Employee.findByIdAndDelete(id); // Đổi từ 'Supplier' thành 'Employee'
+  const employee = Employee.findByIdAndDelete(id); 
   return employee;
 };
 

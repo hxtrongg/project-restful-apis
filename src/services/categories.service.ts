@@ -10,19 +10,33 @@ import {ICategory} from '../types/model';
  * Các hàm trong serice phải có return
  */
 
-
-const getAllItem = async () => {
+const getAllItems = async (page: number, limit: number) => {
   //Tương đương: SELECT * categories (SQL)
-  const categories = Category.find();
-  return categories;
+  //Query có phân trang
+  const categories = await Category.
+                  find().
+                  select('-__v').
+                  skip((page - 1) * limit).
+                  limit(limit);
+
+  /// get total documents in the Categories collection 
+  const totalRecords = await Category.count();
+
+  //return response with Categories, total pages, and current page
+  return {
+    categories,
+    totalRecords,
+    totalPages: Math.ceil(totalRecords / limit),
+    currentPage: page,
+    recordsPerPage: limit
+  };
 };
 
-const getById = async (id: string) => {
+const getItemById = async (id: string) => {
  //SELECT * categories WHERE id = id
  console.log(id);
  
  const user = await Category.findById(id);
-
 
  return user;
 };
@@ -52,8 +66,8 @@ const deleteItem = async (id: string) => {
 };
 
 export default {
-  getAllItem,
-  getById,
+  getAllItems,
+  getItemById,
   updateItem,
   createItem,
   deleteItem,

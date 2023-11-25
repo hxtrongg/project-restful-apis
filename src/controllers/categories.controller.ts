@@ -1,15 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 import { sendJsonSuccess } from '../helpers/responseHandler';
 import categoriesService from '../services/categories.service';
+
 /**
- * Controller == Điều khiển
+ * Controller - Điều khiển
  * - Tiếp nhận req từ client
  * - Phản hồi lại res cho client
  */
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const categories = await categoriesService.getAllItem();
+    // destructure page and limit and set default values
+    const page = req.query.page ? parseInt(req.query.page as string) : 1;
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 5;
+
+    const categories = await categoriesService.getAllItems(page, limit);
     sendJsonSuccess(res)(categories); // Gọi hàm mà có truyền giá trị cho data
   } catch (error) {
     next(error);
@@ -18,9 +23,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 
 const getItemById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await categoriesService.getById((req.params.id));
-
-    sendJsonSuccess(res)(user);
+    const product = await categoriesService.getItemById(req.params.id);
+    sendJsonSuccess(res)(product);
   } catch (error) {
     next(error);
   }
@@ -28,10 +32,9 @@ const getItemById = async (req: Request, res: Response, next: NextFunction) => {
 
 const createItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    //thêm phần tử mới vào categories[]
     const payload = req.body;
-    const oldItem = await categoriesService.createItem(payload);
-    sendJsonSuccess(res)(oldItem);
+    const newCategory = await categoriesService.createItem(payload);
+    sendJsonSuccess(res)(newCategory);
   } catch (error) {
     next(error);
   }
@@ -42,11 +45,8 @@ const updateItem = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     console.log(id, req.body);
     const payload = req.body;
-    //Bước 1: Tìm xem  có tồn tại user có id không
-    const newcategories = await categoriesService.updateItem((id), payload);
-
-    sendJsonSuccess(res)(newcategories); // Gọi hàm mà có truyền giá trị cho data
-    //res.json('ok');
+    const updatedCategory = await categoriesService.updateItem(id, payload);
+    sendJsonSuccess(res)(updatedCategory);
   } catch (error) {
     next(error);
   }
@@ -54,13 +54,11 @@ const updateItem = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params; //id = 4
-
-    const newcategories = await categoriesService.deleteItem(id);
-
-    sendJsonSuccess(res)(newcategories); // Gọi hàm mà có truyền giá trị cho data
+    const { id } = req.params;
+    const deletedCategory = await categoriesService.deleteItem(id);
+    sendJsonSuccess(res)(deletedCategory);
   } catch (err) {
-    next(err); //Chuyển tiếp lỗi ra cho handle error ở app.ts xử lý
+    next(err);
   }
 };
 

@@ -12,13 +12,13 @@ import {ISupplier} from '../types/model';
 
 const getAllItems = async () => {
   // Tương đương: SELECT * FROM suppliers (SQL)
-  const suppliers = Supplier.find();
+  const suppliers = Supplier.find({}, ' -__v ');
   return suppliers;
 };
 
 const getItemById = async (id: string) => {
   // SELECT * FROM suppliers WHERE id = id
-  console.log(id);
+  // console.log(id);
 
   const supplier = await Supplier.findById(id);
 

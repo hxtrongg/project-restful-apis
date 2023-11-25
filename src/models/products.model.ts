@@ -3,6 +3,7 @@ import { IProduct } from '../types/model';
 import buildSlug from '../helpers/buildSlug';
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
+const mongoose = require('mongoose');
 
 const productSchema = new Schema<IProduct>({
   name: {

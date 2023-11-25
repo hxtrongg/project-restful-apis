@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { sendJsonSuccess } from '../helpers/responseHandler';
-import employeesService from '../services/employees.service'; // Đổi tên từ 'suppliers.service' thành 'employees.service'
+import customersService from '../services/customers.service'; // Đổi tên từ 'suppliers.service' thành 'customers.service'
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const employees = await employeesService.getAllItems(); // Đổi từ 'suppliersService' thành 'employeesService'
-    sendJsonSuccess(res)(employees);
+    const customers = await customersService.getAllItems(); // Đổi từ 'suppliersService' thành 'customersService'
+    sendJsonSuccess(res)(customers);
   } catch (error) {
     next(error);
   }
@@ -13,8 +13,8 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
 
 const getItemById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const employee = await employeesService.getItemById(req.params.id); // Đổi từ 'suppliersService' thành 'employeesService'
-    sendJsonSuccess(res)(employee);
+    const customer = await customersService.getItemById(req.params.id); // Đổi từ 'suppliersService' thành 'customersService'
+    sendJsonSuccess(res)(customer);
   } catch (error) {
     next(error);
   }
@@ -23,8 +23,8 @@ const getItemById = async (req: Request, res: Response, next: NextFunction) => {
 const createItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const payload = req.body;
-    const newEmployee = await employeesService.createItem(payload); // Đổi từ 'suppliersService' thành 'employeesService'
-    sendJsonSuccess(res)(newEmployee);
+    const newCustomer = await customersService.createItem(payload); // Đổi từ 'suppliersService' thành 'customersService'
+    sendJsonSuccess(res)(newCustomer);
   } catch (error) {
     next(error);
   }
@@ -35,8 +35,8 @@ const updateItem = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     console.log(id, req.body);
     const payload = req.body;
-    const updatedEmployee = await employeesService.updateItem(id, payload); // Đổi từ 'suppliersService' thành 'employeesService'
-    sendJsonSuccess(res)(updatedEmployee);
+    const updatedCustomer = await customersService.updateItem(id, payload); // Đổi từ 'suppliersService' thành 'customersService'
+    sendJsonSuccess(res)(updatedCustomer);
   } catch (error) {
     next(error);
   }
@@ -45,8 +45,8 @@ const updateItem = async (req: Request, res: Response, next: NextFunction) => {
 const deleteItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const deletedEmployee = await employeesService.deleteItem(id); // Đổi từ 'suppliersService' thành 'employeesService'
-    sendJsonSuccess(res)(deletedEmployee);
+    const deletedCustomer = await customersService.deleteItem(id); // Đổi từ 'suppliersService' thành 'customersService'
+    sendJsonSuccess(res)(deletedCustomer);
   } catch (error) {
     next(error);
   }

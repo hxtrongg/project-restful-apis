@@ -1,5 +1,5 @@
 import express from 'express';
-import categoriesController from '../../controllers/categories.controller';
+import ordersController from '../../controllers/order.controller';
 import authMiddleware from '../../middleware/auth.middleware';
 /***
  * Route chỉ làm nhiệm vụ định tuyến
@@ -9,28 +9,28 @@ import authMiddleware from '../../middleware/auth.middleware';
 const router = express.Router();
 
 //Get All categories from DB
-router.get('/', categoriesController.getAll);
+router.get('/', ordersController.getAll);
 
 //get user by ID
 //Gắn middleware vào để check id có phải là số không
-router.get('/:id', categoriesController.getItemById);
+router.get('/:id', ordersController.getItemById);
 
 //Create a new user
 //Check Token
 //Check xem user có quyền User không ?
-router.post('/', authMiddleware.checkToken, authMiddleware.checkAuthorize(["User","Admin"]), categoriesController.createItem);
+router.post('/',ordersController.createItem);
 
 /**
  * Update a user by ID
  * PATH /api/v1//:id
  */
-router.patch('/:id',  categoriesController.updateItem);
+router.patch('/:id',  ordersController.updateItem);
 
 /**
  * Delete a user by ID
  * DELETE /api/v1//:id
  */
-router.delete('/:id', authMiddleware.checkToken, authMiddleware.checkAuthorize(["Admin"]), categoriesController.deleteItem);
+router.delete('/:id',ordersController.deleteItem);
 
 //Xuất router ra
 export default router;

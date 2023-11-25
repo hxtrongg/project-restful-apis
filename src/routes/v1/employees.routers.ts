@@ -1,5 +1,5 @@
 import express from 'express';
-import employeesController from '../../controllers/employees.controoler';
+import employeesController from '../../controllers/employees.controller';
 
 /***
  * Route chỉ làm nhiệm vụ định tuyến
